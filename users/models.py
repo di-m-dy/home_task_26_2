@@ -11,7 +11,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='Email пользователя')
     phone = PhoneField(verbose_name='Телефон пользователя', null=True, blank=True)
     city = models.CharField(max_length=100, verbose_name='Город пользователя', null=True, blank=True)
-    avatar = models.ImageField(upload_to='users/avatars', verbose_name='Изображение профиля')
+    avatar = models.ImageField(upload_to='users/avatars', verbose_name='Изображение профиля', null=True, blank=True)
 
     def __str__(self):
         return f"{self.email}"
