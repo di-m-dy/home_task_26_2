@@ -1,0 +1,74 @@
+{
+    "payments": [
+        {
+            "user": 1,
+            "course": 1,
+            "lesson": null,
+            "cost": 1200.50,
+            "method": "card"
+        },
+        {
+            "user": 1,
+            "course": null,
+            "lesson": 1,
+            "cost": 500.00,
+            "method": "cash"
+        },
+        {
+            "user": 1,
+            "course": 2,
+            "lesson": null,
+            "cost": 1500.75,
+            "method": "card"
+        },
+        {
+            "user": 1,
+            "course": null,
+            "lesson": 3,
+            "cost": 750.00,
+            "method": "cash"
+        },
+        {
+            "user": 1,
+            "course": 1,
+            "lesson": null,
+            "cost": 1300.00,
+            "method": "card"
+        },
+        {
+            "user": 1,
+            "course": null,
+            "lesson": 1,
+            "cost": 600.00,
+            "method": "cash"
+        },
+        {
+            "user": 1,
+            "course": 2,
+            "lesson": null,
+            "cost": 1400.00,
+            "method": "card"
+        },
+        {
+            "user": 1,
+            "course": 1,
+            "lesson": null,
+            "cost": 1250.25,
+            "method": "cash"
+        },
+        {
+            "user": 1,
+            "course": null,
+            "lesson": 3,
+            "cost": 800.00,
+            "method": "card"
+        },
+        {
+            "user": 1,
+            "course": 2,
+            "lesson": null,
+            "cost": 1550.50,
+            "method": "cash"
+        }
+    ]
+}
