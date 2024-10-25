@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Course(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название курса')
     description = models.TextField(verbose_name='Описание курса')
