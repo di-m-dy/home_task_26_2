@@ -14,6 +14,7 @@ class Command(BaseCommand):
         with open(BASE_DIR / 'default_data/payment_data.json') as file:
             data = json.load(file)
         payments = data['payments']
+        print(payments)
 
         for i in payments:
             serialize = PaymentSerializer(data=i)
