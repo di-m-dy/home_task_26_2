@@ -1,7 +1,5 @@
-from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from django_filters import rest_framework as filters
-from users.models import User, Payment
+from users.models import User
 from users.permissions import IsCurrentUser
 from users.serializers import UserSerializer, PaymentSerializer, UserCreateSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -34,12 +32,3 @@ class UserCreateAPIView(CreateAPIView):
         user = serializer.save()
         user.set_password(user.password)
         user.save()
-
-
-class PaymentsListAPIView(ListAPIView):
-    serializer_class = PaymentSerializer
-    queryset = Payment.objects.all()
-    filter_backends = (filters.DjangoFilterBackend, OrderingFilter, SearchFilter)
-    filterset_fields = ('course', 'lesson')
-    ordering_fields = ('created_at',)
-    search_fields = ('method',)

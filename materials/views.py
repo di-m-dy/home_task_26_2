@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from materials.models import Course, Lesson
-from materials.permissions import IsModerator
+from materials.permissions import IsModerator, IsOwner
 from materials.serializers import CourseSerializer, LessonSerializer
 
 
@@ -12,11 +12,11 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['update', 'partial_update']:
-            permission_classes = [IsAdminUser, IsModerator]
+            permission_classes = [IsAdminUser, IsModerator | IsOwner]
         elif self.action in ['create', 'destroy']:
-            permission_classes = [IsAdminUser]
+            permission_classes = [IsAdminUser | IsOwner]
         else:
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAdminUser, IsModerator, IsOwner]
         return [permission() for permission in permission_classes]
 
 

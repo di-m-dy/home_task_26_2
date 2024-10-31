@@ -3,9 +3,9 @@ import json
 from django.core.management import BaseCommand
 
 from config.settings import BASE_DIR
-from users.models import Payment, User
+from payments.models import Payment
 from materials.models import Course, Lesson
-from users.serializers import PaymentSerializer
+from payments.serializers import PaymentSerializer
 
 
 
