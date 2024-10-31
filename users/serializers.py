@@ -11,8 +11,8 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = '__all__'
 
-class UserListSerializer(ModelSerializer):
 
+class UserListSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('email', 'date_joined', 'first_name', 'city')
