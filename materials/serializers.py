@@ -7,7 +7,7 @@ class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = '__all__'
-        validators = [NoLinkValidator(field_name='content')]
+        validators = [NoLinkValidator(field_name='description')]
 
 
 class CourseSerializer(ModelSerializer):
@@ -22,9 +22,15 @@ class CourseSerializer(ModelSerializer):
         fields = '__all__'
         validators = [NoLinkValidator(field_name='description')]
 
+class LessonForCourseSerializer(ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ('title', 'description', 'owner')
+        validators = [NoLinkValidator(field_name='description')]
+
 
 class CourseCreateWithLessonsSerializer(ModelSerializer):
-    lessons = LessonSerializer(many=True)
+    lessons = LessonForCourseSerializer(many=True)
 
     class Meta:
         model = Course

@@ -16,8 +16,8 @@
 
     _Логин: test@example.com Пароль: 0987_
 
-6. Заполните базу даных (курсы и уроки): `python manage.py fill_material_data `
-7. Заполните базу даных (платежи): `python manage.py fill_payments_data`
+6. Заполните базу даных (курсы и уроки): `python manage.py fill_materials_data `
+7. Заполните базу даных (платежи): `python manage.py fill_payment_data`
 
 # Задание 1
 Для сохранения уроков и курсов реализуйте дополнительную проверку на отсутствие в материалах ссылок 

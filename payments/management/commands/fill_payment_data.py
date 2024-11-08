@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
         for i in payments:
             serialize = PaymentSerializer(data=i)
-            if serialize.is_valid():
+            if serialize.is_valid(raise_exception=True):
                 serialize.save()
             else:
                 print(f"Payment #{i['id']} not saved")
