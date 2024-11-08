@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscribe
 from materials.validators import NoLinkValidator
 
 
@@ -13,6 +13,12 @@ class LessonSerializer(ModelSerializer):
 class CourseSerializer(ModelSerializer):
     lessons_count = SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
+    is_subscribed = SerializerMethodField()
+
+    def get_is_subscribed(self, obj):
+        request = self.context.get('request')
+        if request:
+            return obj.subscribes.filter(user=request.user).exists()
 
     def get_lessons_count(self, obj):
         return obj.lessons.count()
@@ -43,4 +49,9 @@ class CourseCreateWithLessonsSerializer(ModelSerializer):
         for lesson in lessons:
             Lesson.objects.create(**lesson, course=course_object)
         return course_object
+
+class SubscribeSerializer(ModelSerializer):
+    class Meta:
+        model = Subscribe
+        fields = '__all__'
 

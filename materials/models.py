@@ -31,3 +31,16 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
+
+class Subscribe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscribes')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscribes')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Подписка: {self.user} - {self.course}"
+
+    class Meta:
+        unique_together = ['user', 'course']
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
