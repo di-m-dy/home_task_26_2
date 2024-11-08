@@ -28,6 +28,7 @@ class CourseSerializer(ModelSerializer):
         fields = '__all__'
         validators = [NoLinkValidator(field_name='description')]
 
+
 class LessonForCourseSerializer(ModelSerializer):
     class Meta:
         model = Lesson
@@ -50,8 +51,8 @@ class CourseCreateWithLessonsSerializer(ModelSerializer):
             Lesson.objects.create(**lesson, course=course_object)
         return course_object
 
+
 class SubscribeSerializer(ModelSerializer):
     class Meta:
         model = Subscribe
         fields = '__all__'
-

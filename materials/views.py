@@ -27,20 +27,16 @@ class CourseViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
-    def create(self, request, *args, **kwargs):
-        request.data["owner"] = request.user.pk
-        data = super().create(request=request, *args, **kwargs)
-        return data
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ~IsModerator]
 
-    def create(self, request, *args, **kwargs):
-        request.data["owner"] = request.user.pk
-        data = super().create(request=request, *args, **kwargs)
-        return data
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -48,7 +44,6 @@ class LessonListAPIView(generics.ListAPIView):
     queryset = Lesson.objects.all().order_by('id')
     permission_classes = [IsAuthenticated]
     pagination_class = MaterialsPagination
-
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):

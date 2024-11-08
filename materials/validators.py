@@ -1,10 +1,12 @@
 import re
 from django.core.exceptions import ValidationError
 
+
 class NoLinkValidator:
     """
     Пользовательский валидатор для проверки наличия ссылок в тексте
     """
+
     def __init__(self, field_name):
         self.field_name = field_name
 
