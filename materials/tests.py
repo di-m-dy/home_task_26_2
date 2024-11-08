@@ -6,6 +6,9 @@ from users.models import User
 
 
 class LessonTestCase(APITestCase):
+    """
+    Тесты для уроков (CRUD
+    """
     def setUp(self):
         self.user = User.objects.create(email='testuser@example.com', password='testpassword')
         self.other_user = User.objects.create(email='other_test_user@example.com', password='testpassword')
@@ -92,6 +95,9 @@ class LessonTestCase(APITestCase):
 
 
 class SubscribeToggleTestCase(APITestCase):
+    """
+    Тесты для подписки на курс
+    """
     def setUp(self):
         self.user = User.objects.create(email='test_for_subscribe', password='testpassword')
         self.course = Course.objects.create(title='Test Course', description='Test Description', owner=self.user)

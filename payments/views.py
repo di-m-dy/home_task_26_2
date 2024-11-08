@@ -8,6 +8,9 @@ from payments.serializers import PaymentSerializer
 
 
 class PaymentsListAPIView(ListAPIView):
+    """
+    Список платежей
+    """
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter, SearchFilter)

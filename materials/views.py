@@ -10,11 +10,17 @@ from materials.serializers import CourseSerializer, LessonSerializer, SubscribeS
 
 
 class CourseViewSet(viewsets.ModelViewSet):
+    """
+    CRUD для курсов
+    """
     queryset = Course.objects.all().order_by('id')
     serializer_class = CourseSerializer
     pagination_class = MaterialsPagination
 
     def get_permissions(self):
+        """
+        Переопределение прав доступа
+        """
         if self.action in ['update', 'partial_update']:
             permission_classes = [IsAdminUser | IsOwner | IsModerator]
         elif self.action == 'create':
@@ -28,10 +34,18 @@ class CourseViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
+        """
+        Переопределение метода создания курса
+        Добавление владельца курса (текущий пользователь)
+        """
         serializer.save(owner=self.request.user)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
+    """
+    Создание урока: POST /lessons/create/
+    Создание от имени текущего пользователя
+    """
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ~IsModerator]
 
@@ -40,6 +54,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 
 class LessonListAPIView(generics.ListAPIView):
+    """
+    Список уроков: GET /lessons/
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all().order_by('id')
     permission_classes = [IsAuthenticated]
@@ -47,23 +64,36 @@ class LessonListAPIView(generics.ListAPIView):
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
+    """
+    Просмотр урока: GET /lessons/<int:pk>/
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAdminUser | IsOwner | IsModerator]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
+    """
+    Редактирование урока: PATCH /lessons/<int:pk>/update/
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAdminUser | IsOwner | IsModerator]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
+    """
+    Удаление урока: DELETE /lessons/<int:pk>/delete/
+    """
     queryset = Lesson.objects.all()
     permission_classes = [IsAdminUser | IsOwner]
 
 
 class SubscribeAPIView(generics.CreateAPIView):
+    """
+    Подписка на курс: POST /courses/subscribe_toggle/
+    Если подписка уже существует, то она удаляется, иначе создается
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):

@@ -4,16 +4,23 @@ from materials.validators import NoLinkValidator
 
 
 class LessonSerializer(ModelSerializer):
+    """
+    Сериализатор для уроков
+    """
     class Meta:
         model = Lesson
         fields = '__all__'
+        # Валидатор для поля description - запрет на использование ссылок
         validators = [NoLinkValidator(field_name='description')]
 
 
 class CourseSerializer(ModelSerializer):
-    lessons_count = SerializerMethodField()
+    """
+    Сериализатор для курсов
+    """
+    lessons_count = SerializerMethodField() # Количество уроков в курсе
     lessons = LessonSerializer(many=True, read_only=True)
-    is_subscribed = SerializerMethodField()
+    is_subscribed = SerializerMethodField() # Подписан ли пользователь на курс
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
@@ -30,6 +37,9 @@ class CourseSerializer(ModelSerializer):
 
 
 class LessonForCourseSerializer(ModelSerializer):
+    """
+    Сериализатор для уроков при создании курса
+    """
     class Meta:
         model = Lesson
         fields = ('title', 'description', 'owner')
@@ -37,6 +47,9 @@ class LessonForCourseSerializer(ModelSerializer):
 
 
 class CourseCreateWithLessonsSerializer(ModelSerializer):
+    """
+    Сериализатор для создания курса с уроками (кастомная команда: python manage.py fill_materials_data)
+    """
     lessons = LessonForCourseSerializer(many=True)
 
     class Meta:
@@ -53,6 +66,9 @@ class CourseCreateWithLessonsSerializer(ModelSerializer):
 
 
 class SubscribeSerializer(ModelSerializer):
+    """
+    Сериализатор для подписок
+    """
     class Meta:
         model = Subscribe
         fields = '__all__'
