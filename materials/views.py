@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, generics, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -8,7 +10,36 @@ from materials.paginators import MaterialsPagination
 from materials.permissions import IsModerator, IsOwner
 from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
 
-
+@method_decorator(
+    name='create',
+    decorator=swagger_auto_schema(
+        operation_description='Создание курса')
+)
+@method_decorator(
+    name='update',
+    decorator=swagger_auto_schema(
+        operation_description='Редактирование курса')
+)
+@method_decorator(
+    name='partial_update',
+    decorator=swagger_auto_schema(
+        operation_description='Частичное редактирование курса')
+)
+@method_decorator(
+    name='destroy',
+    decorator=swagger_auto_schema(
+        operation_description='Удаление курса')
+)
+@method_decorator(
+    name='list',
+    decorator=swagger_auto_schema(
+        operation_description='Список курсов')
+)
+@method_decorator(
+    name='retrieve',
+    decorator=swagger_auto_schema(
+        operation_description='Просмотр курса')
+)
 class CourseViewSet(viewsets.ModelViewSet):
     """
     CRUD для курсов
@@ -92,9 +123,11 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
 class SubscribeAPIView(generics.CreateAPIView):
     """
     Подписка на курс: POST /courses/subscribe_toggle/
+
     Если подписка уже существует, то она удаляется, иначе создается
     """
     permission_classes = [IsAuthenticated]
+    serializer_class = SubscribeSerializer
 
     def post(self, request, *args, **kwargs):
         user = request.user
