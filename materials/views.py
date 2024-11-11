@@ -1,4 +1,5 @@
 from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, generics, status
 from rest_framework.generics import get_object_or_404
@@ -145,3 +146,17 @@ class SubscribeAPIView(generics.CreateAPIView):
             message = 'Подписка создана'
             st = status.HTTP_201_CREATED
         return Response({'message': message}, status=st)
+
+
+class SuccessPaymentTemplateView(TemplateView):
+    """
+    Шаблон страницы успешной оплаты
+    """
+    template_name = 'materials/success_payment.html'
+
+
+class CancelPaymentTemplateView(TemplateView):
+    """
+    Шаблон страницы отмены оплаты
+    """
+    template_name = 'materials/cancel_payment.html'

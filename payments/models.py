@@ -27,7 +27,8 @@ class Payment(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма оплаты')
     method = models.CharField(max_length=4, verbose_name='Метод оплаты', choices=PAYMENT_METHOD_CHOICES)
     session_id = models.CharField(max_length=255, verbose_name='ID сессии оплаты', null=True, blank=True)
-    created_at = models.DateTimeField(verbose_name='Дата оплаты')
+    payment_link = models.URLField(max_length=500, verbose_name='Ссылка на оплату', null=True, blank=True)
+    created_at = models.DateTimeField(verbose_name='Дата оплаты', auto_now_add=True)
 
     def __str__(self):
         return f"{self.user}: {self.course or self.lesson} = {self.cost} руб."
