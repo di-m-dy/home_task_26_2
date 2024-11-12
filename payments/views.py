@@ -1,6 +1,8 @@
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListAPIView, CreateAPIView
 from django_filters import rest_framework as filters
+from rest_framework.permissions import IsAuthenticated
+
 from payments.models import Payment
 
 from payments.serializers import PaymentSerializer, PaymentCreateSerializer
@@ -24,13 +26,8 @@ class PaymentsCreateAPIView(CreateAPIView):
     """
     serializer_class = PaymentCreateSerializer
     queryset = Payment.objects.all()
+    permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        if request.data.get('course'):
-            request.data['cost'] = 4000
-        else:
-            request.data['cost'] = 1000
-        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -41,7 +38,7 @@ class PaymentsCreateAPIView(CreateAPIView):
         if serializer.instance.method == 'card':
             strike_product = create_product(name)
             price = serializer.instance.cost
-            price_id = create_price(strike_product.id, price)
+            price_id = create_price(strike_product.id, name, price)
             session = create_checkout_session(price_id.id)
             serializer.instance.session_id = session.id
             serializer.instance.payment_link = session.url

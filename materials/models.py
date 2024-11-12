@@ -4,6 +4,13 @@ from users.models import User
 
 
 class Course(models.Model):
+    """
+    Модель курса
+    title - название курса
+    description - описание курса
+    preview - превью курса (изображение)
+    owner - автор курса
+    """
     title = models.CharField(max_length=255, verbose_name='Название курса')
     description = models.TextField(verbose_name='Описание курса')
     preview = models.ImageField(upload_to='courses', verbose_name='Превью курса', null=True, blank='True')

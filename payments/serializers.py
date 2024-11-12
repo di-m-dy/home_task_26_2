@@ -20,3 +20,4 @@ class PaymentCreateSerializer(ModelSerializer):
         model = Payment
         fields = ('cost', 'course', 'lesson', 'method', 'payment_link', 'created_at')
 
+

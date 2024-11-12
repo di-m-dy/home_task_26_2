@@ -22,12 +22,14 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+TITLE = 'Приложение для обучения'
+DESCRIPTION = 'API для приложения с обучающими материалами'
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title=TITLE,
       default_version='v1',
-      description="Test description",
+      description=DESCRIPTION,
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="contact@snippets.local"),
       license=openapi.License(name="BSD License"),
