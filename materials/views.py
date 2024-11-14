@@ -10,6 +10,8 @@ from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPagination
 from materials.permissions import IsModerator, IsOwner
 from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
+from materials.tasks import update_course
+
 
 @method_decorator(
     name='create',
@@ -73,6 +75,18 @@ class CourseViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
+    def perform_update(self, serializer):
+        """
+        Переопределение метода обновления курса
+        """
+        # Отправка задачи на обновление подписок: если курс обновлен, то отправляется уведомление
+        update_course.delay(
+            course_id=serializer.instance.id,
+            message=f'Общее обновление курса!'
+            )
+        serializer.save()
+
+
 class LessonCreateAPIView(generics.CreateAPIView):
     """
     Создание урока: POST /lessons/create/
@@ -82,6 +96,10 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
+        update_course.delay(
+            course_id=serializer.instance.course.id,
+            message=f'Добавлен новый урок: {serializer.instance}'
+        )
         serializer.save(owner=self.request.user)
 
 
@@ -111,6 +129,14 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAdminUser | IsOwner | IsModerator]
+
+    def perform_update(self, serializer):
+        # Отправка задачи на обновление подписок: если урок обновлен, то отправляется уведомление
+        update_course.delay(
+            course_id=serializer.instance.course.id,
+            message=f'Урок {serializer.instance} обновлен'
+        )
+        serializer.save()
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):

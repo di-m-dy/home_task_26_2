@@ -163,3 +163,21 @@ SIMPLE_JWT = {
 STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
 SUCCESS_PAYMENT_URL = "http://localhost:8000/success_payment/"
 CANCEL_PAYMENT_URL = "http://localhost:8000/cancel_payment/"
+
+
+# Celery Configuration Options
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+SELERY_RESULT_BACKEND = os.getenv('SELERY_RESULT_BACKEND')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv('EMAIL')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

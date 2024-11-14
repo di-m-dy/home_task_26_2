@@ -40,6 +40,9 @@ class Lesson(models.Model):
         verbose_name_plural = 'уроки'
 
 class Subscribe(models.Model):
+    """
+    Модель подписки на курс
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscribes')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscribes')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -51,3 +54,24 @@ class Subscribe(models.Model):
         unique_together = ['user', 'course']
         verbose_name = 'подписка'
         verbose_name_plural = 'подписки'
+
+class SubscribeMailing(models.Model):
+    """
+    Модель рассылки обновления курса
+    """
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name='Курс рассылки',
+        related_name='mailings'
+    )
+    is_success = models.BooleanField(default=True, verbose_name='Статус рассылки')
+    report = models.TextField(null=True, blank=True, verbose_name='Отчет в случае ошибки')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания рассылки')
+
+    def __str__(self):
+        return f"Рассылка: {self.course} - {self.created_at}"
+
+    class Meta:
+        verbose_name = 'рассылка обновления курса'
+        verbose_name_plural = 'рассылки обновления курса'
