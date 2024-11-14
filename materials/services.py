@@ -15,7 +15,7 @@ def send_mail_update_course(course: Course, message: str =''):
     subscribe_mailing = SubscribeMailing.objects.filter(course=course).order_by('-created_at').first()
     print(f"Last mailing: {subscribe_mailing.created_at if subscribe_mailing else None}")
     print(f"Current date: {current_date}")
-    if subscribe_mailing and subscribe_mailing.created_at + PERIOD_DELTA < current_date:
+    if subscribe_mailing and subscribe_mailing.created_at + PERIOD_DELTA > current_date:
         return
     try:
         send = send_mail(
