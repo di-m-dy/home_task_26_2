@@ -157,7 +157,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "UPDATE_LAST_LOGIN": True,
 }
 
 STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
@@ -172,6 +173,13 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 SELERY_RESULT_BACKEND = os.getenv('SELERY_RESULT_BACKEND')
+
+CELERY_BEAT_SCHEDULE = {
+    'task-check-users-activity': {
+        'task': 'materials.tasks.check_last_login',
+        'schedule': timedelta(minutes=1),
+    },
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
