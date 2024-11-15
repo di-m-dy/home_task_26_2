@@ -4,7 +4,6 @@ from celery import shared_task
 
 from materials.models import Course
 from materials.services import send_mail_update_course, block_inactive_users
-from users.models import User
 
 
 @shared_task
