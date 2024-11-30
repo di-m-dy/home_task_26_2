@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: on-failure
+    env_file:
+      .env
+    expose:
+      - "5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "-c", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  redis:
+    image: redis
+    restart: on-failure
+    expose:
+      - "6379"
+
+  app:
+    build: .
+    tty: true
+    ports:
+      - "8000:8000"
+    command: sh -c "python manage.py migrate && python manage.py create_custom_superuser && python manage.py create_moderator_user && python manage.py create_simple_user && python manage.py fill_materials_data && python manage.py fill_payment_data && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    env_file:
+      .env
+
+  celery:
+    build: .
+    tty: true
+    restart: on-failure
+    command: sh -c "celery -A config worker -l INFO"
+    volumes:
+      - .:/app
+    env_file:
+      .env
+    depends_on:
+      - redis
+      - db
+      - app
+
+  celery_beat:
+    build: .
+    tty: true
+    restart: on-failure
+    command: sh -c "celery -A config beat -l INFO"
+    env_file:
+      .env
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - db
+      - app
+
+volumes:
+  pg_data:
