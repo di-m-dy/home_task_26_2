@@ -7,7 +7,7 @@ from users.models import User
 
 class LessonTestCase(APITestCase):
     """
-    Тесты для уроков (CRUD
+    Тесты для уроков (CRUD)
     """
     def setUp(self):
         self.user = User.objects.create(email='testuser@example.com', password='testpassword')

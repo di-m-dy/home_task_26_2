@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'materials',
     'users',
     'payments',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
